@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Comparison Game</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 50px;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 2px solid black;
+            margin: 0 20px;
+            position: relative;
+            /* Menambahkan position relative untuk positioning */
+        }
+
+        .left-box {
+            background-color: lightblue;
+        }
+
+        .right-box {
+            background-color: lightgreen;
+        }
+
+        .right-box.matched {
+            border-color: green;
+        }
+
+        .right-box.not-matched {
+            border-color: red;
+        }
+
+        .textbox-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .textbox {
+            width: 100%;
+            height: 100px;
+            resize: none;
+            box-sizing: border-box;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .hint {
+            position: absolute;
+            font-size: 14px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .width-hint {
+            left: 10px;
+            bottom: 50%;
+            transform: translateY(50%);
+            margin-left: 10px;
+            /* Margin untuk memisahkan dari sisi kotak kiri */
+        }
+
+        .height-hint {
+            left: 50%;
+            transform: translateX(-50%);
+            top: 10px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .box {
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="box left-box">
+            <div class="hint width-hint">200px</div>
+            <div class="hint height-hint">200px</div>
+        </div>
+        <div class="box right-box" id="rightBox"></div>
+    </div>
+    <div class="textbox-container">
+        <textarea class="textbox" id="cssTextbox" placeholder="Write your CSS here"></textarea>
+    </div>
+    <div class="button-container">
+        <button onclick="compareCSS()">Compare CSS</button>
+    </div>
+
+    <script>
+        function compareCSS() {
+            var leftBox = document.querySelector('.left-box');
+            var rightBox = document.getElementById('rightBox');
+            var userCSS = document.getElementById('cssTextbox').value;
+
+            rightBox.style.cssText = userCSS;
+
+            var leftBoxWidth = window.getComputedStyle(leftBox).width;
+            var leftBoxHeight = window.getComputedStyle(leftBox).height;
+            var leftBoxBgColor = window.getComputedStyle(leftBox).backgroundColor;
+
+            var rightBoxWidth = window.getComputedStyle(rightBox).width;
+            var rightBoxHeight = window.getComputedStyle(rightBox).height;
+            var rightBoxBgColor = window.getComputedStyle(rightBox).backgroundColor;
+
+            if (leftBoxWidth === rightBoxWidth && leftBoxHeight === rightBoxHeight && leftBoxBgColor ===
+                rightBoxBgColor) {
+                rightBox.classList.remove('not-matched');
+                rightBox.classList.add('matched');
+                alert('CSS matches!');
+            } else {
+                rightBox.classList.remove('matched');
+                rightBox.classList.add('not-matched');
+                alert('CSS does not match!');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
